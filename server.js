@@ -7,6 +7,7 @@ const { v4: uuid } = require("uuid");
 const mime = require("mime-types");
 // mongoose
 const mongoose = require("mongoose");
+const Image = require("./models/image");
 
 // multer.diskStorage -> 파일 저장 과정을 제어할 수 있게 됨.
 // cb의 첫번째 인자에 오류 객체를 입력하면 파일 저장을 차단하고 오류 처리를 하면됨.
@@ -46,9 +47,19 @@ mongoose
     console.log("MongoDB Connected!");
     app.use("/uploads", express.static("uploads"));
 
-    app.post("/upload", upload.single("imageTest"), (req, res) => {
-      console.log(req.file);
-      res.json(req.file);
+    // image upload API
+    app.post("/images", upload.single("imageTest"), async (req, res) => {
+      const image = await new Image({
+        key: req.file.filename,
+        originalFileName: req.file.originalname,
+      }).save();
+      res.json(image);
+    });
+
+    // image get API
+    app.get("/images", async (req, res) => {
+      const images = await Image.find();
+      res.json(images);
     });
 
     app.listen(PORT, () =>
