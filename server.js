@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { imageRouter } = require("./routes/imageRouter");
 const { userRouter } = require("./routes/userRouter");
+const { authentication } = require("./middleware/authentication");
 
 const { MONGO_URI, PORT } = process.env;
 
@@ -16,6 +17,8 @@ mongoose
     app.use("/uploads", express.static("uploads"));
     // request를 받아서 해당 request에 json형식 데이터가 있다면 json방식으로 변환해중
     app.use(express.json());
+    // authentication
+    app.use(authentication);
     // image router
     app.use("/images", imageRouter);
     // user router

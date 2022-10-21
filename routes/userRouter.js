@@ -66,23 +66,15 @@ userRouter.patch("/login", async (req, res) => {
 // 로그인 시 header에 sessionId를 넣고
 userRouter.patch("/logout", async (req, res) => {
   try {
-    const { sessionid } = req.headers;
-    if (!mongoose.isValidObjectId(sessionid)) {
-      throw new Error("올바르지 않은 session Id 입니다!");
-    }
-
-    const user = await User.findOne({ "sessions._id": sessionid });
-
-    if (!user) {
+    if (!req.user) {
       throw new Error("로그인되지 않은 유저입니다.");
     }
 
     await User.updateOne(
-      { _id: user.id },
-      { $pull: { sessions: { _id: sessionid } } }
+      { _id: req.user.id },
+      { $pull: { sessions: { _id: req.headers.sessionid } } }
     );
 
-    // console.log({ user });
     res.json({ message: "user Logout!" });
   } catch (err) {
     res.status(400).json({ message: err.message });
