@@ -2,8 +2,9 @@ const { Router } = require("express");
 const userRouter = Router();
 const User = require("../models/user");
 // password 암호화 작업
-const { hash } = require("bcryptjs");
+const { hash, compare } = require("bcryptjs");
 
+// register
 userRouter.post("/register", async (req, res) => {
   try {
     // password가 6자리 이하일 경우
@@ -27,4 +28,19 @@ userRouter.post("/register", async (req, res) => {
   }
 });
 
+// login
+userRouter.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ id: req.body.id });
+    const isValid = await compare(req.body.password, user.hashedPassword);
+
+    if (!isValid) {
+      throw new Error("비밀번호가 맞지 않습니다!");
+    }
+
+    res.json({ message: "user Login!" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 module.exports = { userRouter };
