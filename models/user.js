@@ -9,6 +9,14 @@ const UserSchema = new mongoose.Schema(
     hashedPassword: { type: String, required: true },
     // password: { type: String, required: true },
     introduce: { type: String, required: false },
+
+    // session id -> _id를 활용
+    // _id는 default로 자동 생성됨!
+    sessions: [
+      {
+        createAt: { type: Date, required: true },
+      },
+    ],
   },
   {
     timestamps: true,

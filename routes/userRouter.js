@@ -17,12 +17,20 @@ userRouter.post("/register", async (req, res) => {
     }
     // password 암호화
     const hashedPassword = await hash(req.body.password, 10);
-    await new User({
+    const user = await new User({
       name: req.body.name,
       id: req.body.id,
       hashedPassword,
+      sessions: [{ createAt: new Date() }],
     }).save();
-    res.json({ message: "user register!!" });
+
+    const session = user.sessions[0];
+
+    res.json({
+      message: "user register!!",
+      sessionId: session._id,
+      name: user.name,
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -38,7 +46,16 @@ userRouter.post("/login", async (req, res) => {
       throw new Error("비밀번호가 맞지 않습니다!");
     }
 
-    res.json({ message: "user Login!" });
+    // session 추가
+    user.sessions.push({ createAt: new Date() });
+    // 가장 최신 session
+    const session = user.sessions[user.sessions.length - 1];
+    user.save();
+    res.json({
+      message: "user Login!",
+      sessionId: session._id,
+      name: user.name,
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
