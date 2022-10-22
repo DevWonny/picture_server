@@ -94,7 +94,7 @@ userRouter.patch("/logout", async (req, res) => {
 // user의 정보 가져오기
 // 추후 profile image도 fetch 필요
 // 추후 introduction도 fetch 필요
-userRouter.get("/user", async (req, res) => {
+userRouter.post("/user", async (req, res) => {
   const user = await User.findOne({ sessionid: req.body.sessionid });
   try {
     res.json({ message: user, name: user.username, id: user.userId });
