@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 // mongoose
 const mongoose = require("mongoose");
 const { imageRouter } = require("./routes/imageRouter");
@@ -14,6 +15,7 @@ mongoose
   .connect(MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected!");
+    app.use(cors({ origin: "*" }));
     app.use("/uploads", express.static("uploads"));
     // request를 받아서 해당 request에 json형식 데이터가 있다면 json방식으로 변환해중
     app.use(express.json());

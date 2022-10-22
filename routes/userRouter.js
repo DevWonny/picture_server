@@ -33,12 +33,13 @@ userRouter.post("/register", async (req, res) => {
       name: user.name,
     });
   } catch (err) {
+    console.log(req.body);
     res.status(400).json({ message: err.message });
   }
 });
 
 // login
-userRouter.patch("/login", async (req, res) => {
+userRouter.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ userId: req.body.userId });
     const isValid = await compare(req.body.password, user.hashedPassword);
