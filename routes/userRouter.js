@@ -97,7 +97,11 @@ userRouter.patch("/logout", async (req, res) => {
 userRouter.post("/user", async (req, res) => {
   const user = await User.findOne({ sessionid: req.body.sessionid });
   try {
-    res.json({ message: user, name: user.username, id: user.userId });
+    res.json({
+      message: "user DataFetch Success!",
+      name: user.name,
+      id: user.userId,
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
