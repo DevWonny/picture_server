@@ -40,11 +40,13 @@ userRouter.post("/register", async (req, res) => {
 
 // login
 userRouter.post("/login", async (req, res) => {
+  const user = await User.findOne({ userId: req.body.userId });
   try {
-    const user = await User.findOne({ userId: req.body.userId });
-    const isValid = await compare(req.body.password, user.hashedPassword);
+    // const user = await User.findOne({ userId: req.body.userId });
+    const isPassword = await compare(req.body.password, user.hashedPassword);
 
-    if (!isValid) {
+    // password check
+    if (!isPassword) {
       throw new Error("비밀번호가 맞지 않습니다!");
     }
 
@@ -59,6 +61,12 @@ userRouter.post("/login", async (req, res) => {
       name: user.name,
     });
   } catch (err) {
+    if (!user) {
+      res
+        .status(400)
+        .json({ message: "회원정보가 없습니다. 회원가입을 해주세요." });
+      return;
+    }
     res.status(400).json({ message: err.message });
   }
 });
