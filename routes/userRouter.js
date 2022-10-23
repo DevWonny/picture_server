@@ -72,9 +72,12 @@ userRouter.post("/login", async (req, res) => {
 });
 
 // logout
-// 로그인 시 header에 sessionId를 넣고
-userRouter.patch("/logout", async (req, res) => {
+userRouter.post("/logout", async (req, res) => {
   try {
+    console.log(req.headers);
+    console.log(req.headers.sessionid);
+    console.log(typeof req.headers.sessionid);
+    console.log("body", req.body);
     if (!req.user) {
       throw new Error("로그인되지 않은 유저입니다.");
     }
