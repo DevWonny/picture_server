@@ -22,6 +22,7 @@ userRouter.post("/register", async (req, res) => {
       name: req.body.name,
       userId: req.body.userId,
       hashedPassword,
+      introduce: req.body.introduce,
       sessions: [{ createAt: new Date() }],
     }).save();
 
