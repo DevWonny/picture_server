@@ -95,7 +95,10 @@ userRouter.post("/logout", async (req, res) => {
 // 추후 profile image도 fetch 필요
 // 추후 introduction도 fetch 필요
 userRouter.post("/user", async (req, res) => {
-  const user = await User.findOne({ sessionid: req.body.sessionid });
+  const user = await User.findOne({
+    sessions: { $elemMatch: { _id: req.headers.sessionid } },
+  });
+  console.log("user", user);
   try {
     res.json({
       message: "user DataFetch Success!",
