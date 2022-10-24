@@ -93,7 +93,6 @@ userRouter.post("/logout", async (req, res) => {
 // user information get\
 // user의 정보 가져오기
 // 추후 profile image도 fetch 필요
-// 추후 introduction도 fetch 필요
 userRouter.post("/user", async (req, res) => {
   const user = await User.findOne({
     sessions: { $elemMatch: { _id: req.headers.sessionid } },
@@ -103,6 +102,7 @@ userRouter.post("/user", async (req, res) => {
       message: "user DataFetch Success!",
       name: user.name,
       id: user.userId,
+      introduce: user.introduce,
     });
   } catch (err) {
     res.status(400).json({ message: err.message });
