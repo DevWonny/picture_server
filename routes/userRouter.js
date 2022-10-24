@@ -98,7 +98,6 @@ userRouter.post("/user", async (req, res) => {
   const user = await User.findOne({
     sessions: { $elemMatch: { _id: req.headers.sessionid } },
   });
-  console.log("user", user);
   try {
     res.json({
       message: "user DataFetch Success!",
@@ -113,7 +112,10 @@ userRouter.post("/user", async (req, res) => {
 // user edit
 userRouter.post("/edit", async (req, res) => {
   try {
-    await User.updateOne({ name: req.body.name });
+    await User.updateOne({
+      name: req.body.name,
+      introduce: req.body.introduce,
+    });
     res.json({
       message: "user Data Edit Success!",
     });
