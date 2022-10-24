@@ -108,11 +108,10 @@ userRouter.post("/user", async (req, res) => {
 
 // user edit
 userRouter.post("/edit", async (req, res) => {
-  const user = await User.findOnw({ sessionid: req.body.sessionid });
   try {
+    await User.updateOne({ name: req.body.name });
     res.json({
       message: "user Data Edit Success!",
-      user: user,
     });
   } catch (err) {
     res.status(400).json({ message: err.message });
