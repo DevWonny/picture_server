@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const fileUnlink = promisify(fs.unlink);
 
 // image upload API
-imageRouter.post("/", upload.single("imageTest"), async (req, res) => {
+imageRouter.post("/", upload.single("image"), async (req, res) => {
   try {
     if (!req.user) {
       throw new Error("권한 없음! 로그인 후 이미지를 업로드 해주세요!");
