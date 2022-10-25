@@ -124,4 +124,16 @@ userRouter.post("/edit", async (req, res) => {
   }
 });
 
+// user delete api
+userRouter.post("/delete", async (req, res) => {
+  try {
+    await User.findOneAndDelete({
+      sessions: { $elemMatch: { _id: req.body.sessionid } },
+    });
+    res.json({ message: "user Delete!" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 module.exports = { userRouter };
