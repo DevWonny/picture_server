@@ -38,6 +38,12 @@ imageRouter.get("/", async (req, res) => {
   res.json(images);
 });
 
+// image detail get API
+imageRouter.get("/:imageId", async (req, res) => {
+  const image = await Image.findOne({ _id: req.params.imageId });
+  res.json(image);
+});
+
 // image delete API
 // 1. uploads 폴더에 있는 사진 데이터 삭제
 // 2. DB에 있는 image 문서 삭제
