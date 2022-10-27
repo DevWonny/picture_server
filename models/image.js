@@ -9,6 +9,7 @@ const ImageSchema = new mongoose.Schema(
     },
     key: { type: String, required: true },
     originalFileName: { type: String, required: true },
+    text: { type: String, required: false },
   },
   { timestamps: true }
 );

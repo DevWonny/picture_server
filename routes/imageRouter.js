@@ -23,6 +23,7 @@ imageRouter.post("/", upload.single("image"), async (req, res) => {
       },
       key: req.file.filename,
       originalFileName: req.file.originalname,
+      text: req.body.text,
     }).save();
     res.json(image);
   } catch (err) {
