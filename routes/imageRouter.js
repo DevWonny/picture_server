@@ -34,7 +34,20 @@ imageRouter.post("/", upload.single("image"), async (req, res) => {
 
 // image get API
 imageRouter.get("/", async (req, res) => {
-  const images = await Image.find();
+  // const images = await Image.find().limit(3);
+
+  const { lastId } = req.query;
+
+  if (lastId && !mongoose.isValidObjectId(lastId))
+    throw new Error("lastId가 없습니다!");
+  const images = await Image.find(
+    lastId && {
+      _id: { $lt: lastId },
+    }
+  )
+    .sort({ _id: -1 })
+    .limit(9);
+
   res.json(images);
 });
 
