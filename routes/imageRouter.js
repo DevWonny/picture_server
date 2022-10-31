@@ -34,8 +34,6 @@ imageRouter.post("/", upload.single("image"), async (req, res) => {
 
 // image get API
 imageRouter.get("/", async (req, res) => {
-  // const images = await Image.find().limit(3);
-
   const { lastId } = req.query;
 
   if (lastId && !mongoose.isValidObjectId(lastId))
@@ -46,7 +44,7 @@ imageRouter.get("/", async (req, res) => {
     }
   )
     .sort({ _id: -1 })
-    .limit(9);
+    .limit(12);
 
   res.json(images);
 });
